@@ -10,14 +10,14 @@ if str(sys.platform) in ["linux", "linux32", "linux2", "linux3", "linux4", "linu
             import requests
         except:
             print("Requests module not found")
-            print("Trying to install requests")
-            os.popen("/usr/bin/env python3 -m pip install requests")
+            print("Installtion failed. Please retry after installing requests module for python3")
+            exit()
         try:
             import PySimpleGUI
         except:
             print("PySimpleGUI module not found.")
-            print("Trying to install")
-            os.popen("/usr/bin/env python3 -m pip install PySimpleGUI")
+            print("Installtion failed. Please retry after installing pysimplegui module for python3")
+            exit()
         try:
             shutil.copyfile("desktop_linux_themer.py", "/usr/bin/desktop_linux_themer.py")
             shutil.copyfile("lib_desktop_linux_themer.py", "/usr/bin/lib_desktop_linux_themer.py")
