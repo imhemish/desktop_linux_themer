@@ -2,7 +2,7 @@
 Version=1.1
 Type=Application
 Name=Desktop Linux Themer
-Comment=Theme GNOME, Cinnamon and XFCE
+Comment=Theme GNOME, Cinnamon, Budgie and XFCE
 Icon=preferences-desktop-theme
 Exec=/usr/bin/env python3 /usr/bin/desktop_linux_themer.py
 Actions=

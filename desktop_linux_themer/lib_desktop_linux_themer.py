@@ -22,8 +22,9 @@ def sanitiseString(suppliedArg):
 	return temp
 
 # To do:
-# chech gnome user themes extension and enable it
+# check gnome user themes extension and enable it
 # if the user is root, then instead of /root use /usr/share/themes and usr/share/icons
+# Add support for lxde
 
 class themer(object):
 
@@ -32,9 +33,10 @@ class themer(object):
 	XFCEsessions = ["Xubuntu", "XFCE", "xfce", "Xfce"]
 	GNOMEsessions = ["Ubuntu", "Ubuntu on Wayland", "Ubuntu on Xorg", "GNOME", "GNOME on Wayland", "GNOME on Xorg", "gnome", "Gnome"]
 	CinnamonSessions = ["Cinnamon", "Cinnnamon (Software Rendering)", "cinnamon", "CINNAMON", "X-Cinnamon"]
+	BudgieSessions = ["Budgie", "Budgie:GNOME"]
 
-	def confPath(self, arg):
-		return str(os.path.join(self.confPathRoot, (arg+".conf")))
+	# def confPath(self, arg):
+	# 	return str(os.path.join(self.confPathRoot, (arg+".conf")))
 
 	@staticmethod
 	def createDirIfNotExists(path):
@@ -107,7 +109,7 @@ class themer(object):
 	def checkGtkCompatibility(self, path):
 		return self.checkThemeCompatibility(path)["gtk"]
 	
-	def checkMetacityCompatibility(self, path): # metacity is primarily for gnome and cinnamon
+	def checkMetacityCompatibility(self, path): # metacity is primarily for cinnamon
 		return self.checkThemeCompatibility(path)["metacity"]
 	
 	def update(self):
@@ -152,7 +154,7 @@ class themer(object):
 				if value in anothertemplist:
 					self.WMthemes[key] = str(value)
 		
-		if self.memCurrentSession in self.CinnamonSessions or self.memCurrentSession in self.GNOMEsessions:
+		if self.memCurrentSession in self.CinnamonSessions:
 			templist = list(self.memThemes.values())
 			anothertemplist = list(filter(self.checkMetacityCompatibility, templist))
 			for key, value in self.memThemes.items():
@@ -170,6 +172,12 @@ class themer(object):
 		if self.memCurrentSession in self.CinnamonSessions:
 			templist = list(self.memThemes.values())
 			anothertemplist = list(filter(self.checkCinnamonCompatibility, templist))
+			for key, value in self.memThemes.items():
+				if value in anothertemplist:
+					self.desktopThemes[key] = str(value)
+		if self.memCurrentSession in self.BudgieSessions: # Budgie's themeing works the same as GNOME
+			templist = list(self.memThemes.values())
+			anothertemplist = list(filter(self.checkGnomeCompatibility, templist))
 			for key, value in self.memThemes.items():
 				if value in anothertemplist:
 					self.desktopThemes[key] = str(value)
@@ -197,6 +205,8 @@ class themer(object):
 		self.update()
 		if (self.memCurrentSession in self.GNOMEsessions) == True:
 			tempTheme = os.popen("gsettings get org.gnome.desktop.interface icon-theme").readline().rstrip()
+		elif (self.memCurrentSession in self.BudgieSessions) == True: # same as gnome
+			tempTheme = os.popen("gsettings get org.gnome.desktop.interface icon-theme").readline().rstrip()
 		elif (self.memCurrentSession in self.XFCEsessions) == True:
 			tempTheme = str(os.popen("xfconf-query -lvc xsettings -p /Net/IconThemeName").readline().rstrip()).split("Name ")[1]
 		elif (self.memCurrentSession in self.CinnamonSessions) == True:
@@ -209,6 +219,8 @@ class themer(object):
 		self.update()
 		if (self.memCurrentSession in self.GNOMEsessions) == True:
 			tempTheme = os.popen("gsettings get org.gnome.desktop.interface gtk-theme").readline().rstrip()
+		elif (self.memCurrentSession in self.BudgieSessions) == True:
+			tempTheme = os.popen("gsettings get org.gnome.desktop.interface gtk-theme").readline().rstrip() #same as gnome
 		elif (self.memCurrentSession in self.XFCEsessions) == True:
 			tempTheme = str(os.popen("xfconf-query -lvc xsettings -p /Net/ThemeName").readline().rstrip()).split("Name ")[1]
 		elif (self.memCurrentSession in self.CinnamonSessions) == True:
@@ -220,6 +232,8 @@ class themer(object):
 	def getCurrentWMtheme(self):
 		self.update()
 		if (self.memCurrentSession in self.GNOMEsessions) == True:
+			tempTheme = os.popen("gsettings get org.gnome.desktop.wm.preferences theme").readline().rstrip()
+		elif (self.memCurrentSession in self.BudgieSessions) == True: # same as gnome
 			tempTheme = os.popen("gsettings get org.gnome.desktop.wm.preferences theme").readline().rstrip()
 		elif (self.memCurrentSession in self.XFCEsessions) == True:
 			tempTheme = str(os.popen("xfconf-query -lvc xfwm4 -p /general/theme").readline().rstrip()).split("/theme ")[1]
@@ -233,6 +247,8 @@ class themer(object):
 		self.update()
 		if (self.memCurrentSession in self.GNOMEsessions) == True:
 			tempTheme = os.popen("gsettings get org.gnome.desktop.interface cursor-theme").readline().rstrip()
+		elif (self.memCurrentSession in self.BudgieSessions) == True: #same as gnome
+			tempTheme = os.popen("gsettings get org.gnome.desktop.interface cursor-theme").readline().rstrip()
 		elif (self.memCurrentSession in self.XFCEsessions) == True:
 			tempTheme = str(os.popen("xfconf-query -lvc xsettings -p /Gtk/CursorThemeName").readline().rstrip()).split("Name ")[1]
 		elif (self.memCurrentSession in self.CinnamonSessions) == True:
@@ -245,6 +261,8 @@ class themer(object):
 		self.update()
 		if (self.memCurrentSession in self.GNOMEsessions) == True:
 			tempTheme = os.popen("gsettings get org.gnome.shell.extensions.user-theme name").readline().rstrip()
+		elif (self.memCurrentSession in self.BudgieSessions) == True: # same as gnome
+			tempTheme = os.popen("gsettings get org.gnome.shell.extensions.user-theme name").readline().rstrip()
 		elif (self.memCurrentSession in self.XFCEsessions) == True:
 			return self.getCurrentGtkTheme() # XFCE does not have any desktop theme of its own and everything including panel depend on gtk theme
 		elif (self.memCurrentSession in self.CinnamonSessions) == True:
@@ -255,6 +273,8 @@ class themer(object):
 
 	def changeGtkTheme(self, suppliedArg):
 		if self.memCurrentSession in self.GNOMEsessions:
+			stream = os.popen("gsettings set org.gnome.desktop.interface gtk-theme '{}'".format(suppliedArg))
+		elif self.memCurrentSession in self.BudgieSessions: # same as gnome
 			stream = os.popen("gsettings set org.gnome.desktop.interface gtk-theme '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.XFCEsessions:
 			stream = os.popen("xfconf-query -c xsettings -p /Net/ThemeName -s '{}'".format(suppliedArg))
@@ -267,6 +287,8 @@ class themer(object):
 	def changeIconTheme(self, suppliedArg):
 		if self.memCurrentSession in self.GNOMEsessions:
 			stream = os.popen("gsettings set org.gnome.desktop.interface icon-theme '{}'".format(suppliedArg))
+		elif self.memCurrentSession in self.BudgieSessions: # same as gnome
+			stream = os.popen("gsettings set org.gnome.desktop.interface icon-theme '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.XFCEsessions:
 			stream = os.popen("xfconf-query -c xsettings -p /Net/IconThemeName -s '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.CinnamonSessions:
@@ -277,6 +299,8 @@ class themer(object):
 
 	def changeWMtheme(self, suppliedArg):
 		if self.memCurrentSession in self.GNOMEsessions:
+			stream = os.popen("gsettings set org.gnome.desktop.wm.preferences theme '{}'".format(suppliedArg))
+		elif self.memCurrentSession in self.BudgieSessions: #same as gnome
 			stream = os.popen("gsettings set org.gnome.desktop.wm.preferences theme '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.XFCEsessions:
 			stream = os.popen("xfconf-query -c xfwm4 -p /general/theme -s '{}'".format(suppliedArg))
@@ -289,6 +313,8 @@ class themer(object):
 	def changeCursorTheme(self, suppliedArg):
 		if self.memCurrentSession in self.GNOMEsessions:
 			stream = os.popen("gsettings set org.gnome.desktop.interface cursor-theme '{}'".format(suppliedArg))
+		elif self.memCurrentSession in self.BudgieSessions: # same as gnome
+			stream = os.popen("gsettings set org.gnome.desktop.interface cursor-theme '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.XFCEsessions:
 			stream = os.popen("xfconf-query -c xsettings -p /Gtk/CursorThemeName -s '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.CinnamonSessions:
@@ -300,6 +326,8 @@ class themer(object):
 	def changeDesktopTheme(self, suppliedArg):
 		if self.memCurrentSession in self.GNOMEsessions:
 			stream = os.popen("gsettings set org.gnome.shell.extensions.user-theme name '{}'".format(suppliedArg))
+		elif self.memCurrentSession in self.BudgieSessions: #same as gnome
+			stream = os.popen("gsettings set org.gnome.shell.extensions.user-theme name '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.XFCEsessions:
 			self.changeGtkTheme(suppliedArg) # XFCE relies on GTK for desktop appearance
 			stream = os.popen("echo dummycommand")
@@ -309,12 +337,12 @@ class themer(object):
 			stream = os.popen("echo notFound")
 		stream.close()
 	
-themerobj = themer()
-print(themerobj.getCurrentIconTheme())
-print(themerobj.getCurrentGtkTheme())
-print(themerobj.getCurrentWMtheme())
-print(themerobj.getCurrentCursorTheme())
-print(themerobj.getCurrentDesktopTheme())
+# themerobj = themer()
+# print(themerobj.getCurrentIconTheme())
+# print(themerobj.getCurrentGtkTheme())
+# print(themerobj.getCurrentWMtheme())
+# print(themerobj.getCurrentCursorTheme())
+# print(themerobj.getCurrentDesktopTheme())
 # themerobj.changeGtkTheme("WhiteSur-dark")
 # themerobj.changeIconTheme("ePapirus")
 # themerobj.changeWMtheme("WhiteSur-dark")
