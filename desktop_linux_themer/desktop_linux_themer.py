@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 from lib_desktop_linux_themer import themer
 import PySimpleGUI as sg
 themerobj = themer()
