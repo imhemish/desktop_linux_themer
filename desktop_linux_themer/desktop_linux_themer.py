@@ -21,7 +21,9 @@ while True:
 	if event in [sg.WIN_CLOSED, "Exit"]:
 		break
 	elif event == "Set GTK+ Theme":
-		themerobj.changeGtkTheme(values["gtk"])
+                themerobj.changeGtkTheme(values["gtk"])
+                if themerobj.memCurrentSession in themerobj.GNOMEsessions or themerobj.memCurrentSession in themerobj.BudgieSessions:
+                        themerobj.changeWMtheme(values["gtk"]) # because budgie and gnome dont care about window manager theme
 	elif event == "Set WM Theme":
 		themerobj.changeWMtheme(values["WM"])
 	elif event == "Set Desktop Theme":
