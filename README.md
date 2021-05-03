@@ -22,7 +22,14 @@ If on Ubuntu or Debian or distros based on these two: open terminal and type "su
 If on Fedora or Red Hat Enterprise Linux or distros based on these: open terminal and type "sudo dnf install tk tcl python3-tk python3-pip -y" (without quotes) and press enter and put in your account password and wait for the installation to complete.  
 If on Arch Linux or Manjaro or Garuda or distros based on Arch: open terminal and type "sudo pacman -S tk tcl python3-tk python3-pip -y" (without quotes) and press enter and put in your account password and wait for the installation to complete. 
 - Then in terminal, (for all distros) type "sudo pip install pysimplegui" (without quotes) and type in your account password and wait for the installation to complete.
-- Download the latest installer script by clicking this link: https://github.com/hemish04082005/desktop_linux_themer/releases/latest/download/installer.sh and open terminal and navigate to folder containing the downloaded script using "cd" command and then type "sudo ./installer.sh" (without quotes). If you get an error claiming "Command not found", type this in terminal "chmod +x installer.sh" (without quotest). Then, put in your account password and wait for the installation to succeeed. Finally, you have installed it!
+- Download the latest archive (either tar.gz or .zip) through this page: https://github.com/hemish04082005/desktop_linux_themer/releases/latest/ and unzip it and open terminal and navigate to unarchived folder using "cd" command and then type "./build_installer.sh" (without quotes) and press enter and then type "sudo ./installer.sh" (without quotes). Then, put in your account password and wait for the installation to succeeed. Finally, you have installed it! If you encounter "Permission denied" or "Command not found", use this command to first turn the build_installer.sh and installer.sh executable by commands:  
+```bash  
+chmod +x build_installer.sh
+```  
+```bash  
+chmod +x installer.sh
+```bash  
+
 - Additional step for GNOME and Budgie users: Make sure that user-theme extension is installed through https://extensions.gnome.org/extension/19/user-themes/ and enabled too.  
 
 # Usage:  
