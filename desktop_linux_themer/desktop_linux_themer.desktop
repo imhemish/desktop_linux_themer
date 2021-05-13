@@ -7,4 +7,4 @@ Icon=preferences-desktop-theme
 Exec=/usr/bin/env python3 /usr/bin/desktop_linux_themer.py
 Actions=
 Categories=DesktopSettings;Settings;Utility;
-StartupNotify=true
+StartupNotify=false

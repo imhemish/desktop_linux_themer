@@ -250,7 +250,12 @@ class themer(object):
 		elif (self.memCurrentSession in self.BudgieSessions) == True: #same as gnome
 			tempTheme = os.popen("gsettings get org.gnome.desktop.interface cursor-theme").readline().rstrip()
 		elif (self.memCurrentSession in self.XFCEsessions) == True:
-			tempTheme = str(os.popen("xfconf-query -lvc xsettings -p /Gtk/CursorThemeName").readline().rstrip()).split("Name ")[1]
+                        try:
+                                tempTheme = str(os.popen("xfconf-query -lvc xsettings -p /Gtk/CursorThemeName").readline().rstrip()).split("Name ")[1]
+                        except:
+                                stream = os.popen('xfconf-query -v -n -c xsettings -p /Gtk/CursorThemeName -t string -s "Adwaita"')
+                                tempTheme = tempTheme = str(os.popen("xfconf-query -lvc xsettings -p /Gtk/CursorThemeName").readline().rstrip()).split("Name ")[1]
+                                stream.close()
 		elif (self.memCurrentSession in self.CinnamonSessions) == True:
 			tempTheme = os.popen("gsettings get org.cinnamon.desktop.interface cursor-theme").readline().rstrip()
 		else:
