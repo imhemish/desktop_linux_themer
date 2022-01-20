@@ -15,6 +15,10 @@ if themerobj.memCurrentSession in themerobj.XFCEsessions: # Beacuse we dont have
 	Layout.pop(3)
 if themerobj.memCurrentSession in themerobj.GNOMEsessions or themerobj.memCurrentSession in themerobj.BudgieSessions: # Budgie and GNOME don't respect window manager theme and rely on GTK for window manager
 	Layout.pop(2)
+if themerobj.memCurrentSession in themerobj.swaySessions: # Beacuse we dont have desktop themes in Sway
+	Layout.pop(3)
+if themerobj.memCurrentSession in themerobj.swaySessions : # No WM themes in sway
+	Layout.pop(2)
 Window = sg.Window("Linux Themer", Layout)
 while True:
 	event, values = Window.read()

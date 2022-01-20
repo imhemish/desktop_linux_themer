@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 import os
+from os.path import expanduser as _
+from os.path import join as joinp
+
+def createDirIfNotExists(path):
+	if os.path.exists(str(path)) == False:
+		os.mkdir(str(path))
+	else:
+		pass
+
+def createFileIfNotExists(path):
+	if os.path.exists(str(path)) == False:
+		with open(str(path), "x") as y:
+			pass
+	else:
+		pass
 
 def mergeDict(dict1, dict2):
 	res = {**dict1, **dict2}
@@ -21,6 +36,36 @@ def sanitiseString(suppliedArg):
 		temp = temp.replace("'", "")
 	return temp
 
+def changeConfigIni(file, group, key, value):
+	from configparser import ConfigParser
+	parser = ConfigParser()
+	parser.read(file)
+	print(parser[group][key])
+	parser.set(group, key, value)
+	try:
+		with open(file, "wt") as f:
+			parser.write(f)
+	except:
+		print("Exception")
+
+def changeGtkThemeIni(theme):
+	createDirIfNotExists(joinp(_("~"), ".config"))
+	createDirIfNotExists(joinp(_("~"), ".config", "gtk-3.0"))
+	filen = joinp(_("~"), ".config", "gtk-3.0", "settings.ini")
+	changeConfigIni(filen, "Settings", "gtk-theme-name", theme)
+
+def changeCursorThemeIni(theme):
+	createDirIfNotExists(joinp(_("~"), ".config"))
+	createDirIfNotExists(joinp(_("~"), ".config", "gtk-3.0"))
+	filen = joinp(_("~"), ".config", "gtk-3.0", "settings.ini")
+	changeConfigIni(filen, "Settings", "gtk-cursor-theme-name", theme)
+
+def changeIconThemeIni(theme):
+	createDirIfNotExists(joinp(_("~"), ".config"))
+	createDirIfNotExists(joinp(_("~"), ".config", "gtk-3.0"))
+	filen = joinp(_("~"), ".config", "gtk-3.0", "settings.ini")
+	changeConfigIni(filen, "Settings", "gtk-icon-theme-name", theme)
+
 # To do:
 # check gnome user themes extension and enable it
 # if the user is root, then instead of /root use /usr/share/themes and usr/share/icons
@@ -31,13 +76,13 @@ class themer(object):
 	homeDir = str(os.path.expanduser("~"))
 	confPathRoot = str(os.path.join(homeDir, ".linuxThemer/"))
 	XFCEsessions = ["Xubuntu", "XFCE", "xfce", "Xfce"]
-	GNOMEsessions = ["Ubuntu", "Ubuntu on Wayland", "Ubuntu on Xorg", "GNOME", "GNOME on Wayland", "GNOME on Xorg", "gnome", "Gnome"]
+	GNOMEsessions = ["Ubuntu", "Ubuntu on Wayland", "Ubuntu on Xorg", "GNOME", "GNOME on Wayland", "GNOME on Xorg", "gnome", "Gnome", "ubuntu:GNOME"]
 	CinnamonSessions = ["Cinnamon", "Cinnnamon (Software Rendering)", "cinnamon", "CINNAMON", "X-Cinnamon"]
 	BudgieSessions = ["Budgie", "Budgie:GNOME"]
+	swaySessions = ["sway", "Sway"]
 
 	# def confPath(self, arg):
 	# 	return str(os.path.join(self.confPathRoot, (arg+".conf")))
-
 	@staticmethod
 	def createDirIfNotExists(path):
 		if os.path.exists(str(path)) == False:
@@ -93,7 +138,7 @@ class themer(object):
 			return False
 	
 	def checkIconsCompatibility(self, path):
-		if "index.theme" in os.listdir(path) and not "cursors" in os.listdir(path):
+		if "index.theme" in os.listdir(path):
 			return True
 		else:
 			return False
@@ -129,7 +174,13 @@ class themer(object):
 		self.memIcons = mergeDict(self.memSystemIcons, self.memUserIcons)
 
 		# Determining current desktop environment
-		self.memCurrentSession = (str(os.environ["XDG_CURRENT_DESKTOP"]))
+		try:
+			self.memCurrentSession = (str(os.environ["XDG_CURRENT_DESKTOP"]))
+		except:
+			try:
+				self.memCurrentSession = (str(os.environ["XDG_SESSION_DESKTOP"]))
+			except:
+				pass
 
 		# Final output
 		self.gtkThemes = {}
@@ -211,6 +262,9 @@ class themer(object):
 			tempTheme = str(os.popen("xfconf-query -lvc xsettings -p /Net/IconThemeName").readline().rstrip()).split("Name ")[1]
 		elif (self.memCurrentSession in self.CinnamonSessions) == True:
 			tempTheme = os.popen("gsettings get org.cinnamon.desktop.interface icon-theme").readline().rstrip()
+		elif (self.memCurrentSession in self.swaySessions) == True:
+			tempTheme = os.popen("gsettings get org.gnome.desktop.interface icon-theme").readline().rstrip()
+			# Sway can have gtk2 theme, gtk3 theme or gnome conf as reference, here using gnome conf
 		else:
 			tempTheme = str("not Found")
 		return sanitiseString(tempTheme)
@@ -225,6 +279,9 @@ class themer(object):
 			tempTheme = str(os.popen("xfconf-query -lvc xsettings -p /Net/ThemeName").readline().rstrip()).split("Name ")[1]
 		elif (self.memCurrentSession in self.CinnamonSessions) == True:
 			tempTheme = os.popen("gsettings get org.cinnamon.desktop.interface gtk-theme").readline().rstrip()
+		elif (self.memCurrentSession in self.swaySessions) == True:
+			tempTheme = os.popen("gsettings get org.gnome.desktop.interface gtk-theme").readline().rstrip()
+			# Sway can have gtk2 theme, gtk3 theme or gnome conf as reference, here using gnome conf
 		else:
 			tempTheme = str("not Found")
 		return sanitiseString(tempTheme)
@@ -285,9 +342,14 @@ class themer(object):
 			stream = os.popen("xfconf-query -c xsettings -p /Net/ThemeName -s '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.CinnamonSessions:
 			stream = os.popen("gsettings set org.cinnamon.desktop.interface gtk-theme '{}'".format(suppliedArg))
+		elif self.memCurrentSession in self.swaySessions:
+			stream = os.popen("echo dummy")
+			changeGtkThemeIni(suppliedArg)
 		else:
 			stream = os.popen("echo notFound")
 		stream.close()
+		n = os.popen("gsettings set org.gnome.desktop.interface gtk-theme '{}'".format(suppliedArg))
+		n.close() # some applications pickup gnome conf instead of gtk conf
 	
 	def changeIconTheme(self, suppliedArg):
 		if self.memCurrentSession in self.GNOMEsessions:
@@ -298,9 +360,14 @@ class themer(object):
 			stream = os.popen("xfconf-query -c xsettings -p /Net/IconThemeName -s '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.CinnamonSessions:
 			stream = os.popen("gsettings set org.cinnamon.desktop.interface icon-theme '{}'".format(suppliedArg))
+		elif self.memCurrentSession in self.swaySessions:
+			stream = os.popen("echo dummy")
+			changeIconThemeIni(suppliedArg)
 		else:
 			stream =  os.popen("echo notFound")
 		stream.close()
+		n = os.popen("gsettings set org.gnome.desktop.interface icon-theme '{}'".format(suppliedArg))
+		n.close() # some applications pickup gnome conf instead of gtk conf
 
 	def changeWMtheme(self, suppliedArg):
 		if self.memCurrentSession in self.GNOMEsessions:
@@ -324,9 +391,14 @@ class themer(object):
 			stream = os.popen("xfconf-query -c xsettings -p /Gtk/CursorThemeName -s '{}'".format(suppliedArg))
 		elif self.memCurrentSession in self.CinnamonSessions:
 			stream = os.popen("gsettings set org.cinnamon.desktop.interface cursor-theme '{}'".format(suppliedArg))
+		elif self.memCurrentSession in self.swaySessions:
+			stream = os.popen("echo dummy")
+			changeCursorThemeIni(suppliedArg)
 		else:
 			stream = os.popen("echo notFound")
 		stream.close()
+		n = os.popen("gsettings set org.gnome.desktop.interface cursor-theme '{}'".format(suppliedArg))
+		n.close() # some applications pickup gnome conf instead of gtk conf
 
 	def changeDesktopTheme(self, suppliedArg):
 		if self.memCurrentSession in self.GNOMEsessions:
