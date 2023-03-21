@@ -1,6 +1,6 @@
-# Desktop Linux Themer
+<h1 style="text-align: center; display: box">Desktop Linux Themer</h1>
 
-Desktop Linux Themer is a software helping beginners on Linux to theme their GNOME, XFCE, Cinnamon and Budgie Desktops (generally, GTK-based desktops)
+Desktop Linux Themer is a software helping beginners on Linux to theme their GNOME, XFCE, Cinnamon and Budgie Desktops (generally, GTK-based desktops).
 
 ## Requirements
 
@@ -31,11 +31,11 @@ Desktop Linux Themer is a software helping beginners on Linux to theme their GNO
 
 The following steps should be followed for downloading:
 
-- Make sure that you are using a supported desktop environment.
+- Make sure that you are using a [supported desktop environment](#requirements).
 
 - Make sure that you have [Python 3 installed on your system](#check-python-installation). (Most GNU/Linux distros have python3 preinstalled.)
 
-- In a terminal, install the `pysimplegui` library by typing `sudo pip install pysimplegui` (if it errors, [check the official documentation.](https://pip.pypa.io/en/stable/installation/))
+- In a terminal, install the `pysimplegui` library by typing `sudo pip install pysimplegui` (if this errors, [check the official documentation.](https://pip.pypa.io/en/stable/installation/))
 
 - Download the latest archive (either tar.gz or .zip) in the [releases](../../releases/latest).
 - Unzip it using your favorite unarchiver.
