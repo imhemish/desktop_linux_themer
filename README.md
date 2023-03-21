@@ -37,7 +37,7 @@ The following steps should be followed for downloading:
 
 - In a terminal, install the `pysimplegui` library by typing `sudo pip install pysimplegui` (if it errors, [check the official documentation.](https://pip.pypa.io/en/stable/installation/))
 
-- Download the latest archive (either tar.gz or .zip) in the [releases](./releases/latest).
+- Download the latest archive (either tar.gz or .zip) in the [releases](../../releases/latest).
 - Unzip it using your favorite unarchiver.
 - Open a terminal, and navigate to the unarchived folder.
 - Build the installer script using `chmod +x ./build_installer.sh && sh ./build_installer.sh`.
