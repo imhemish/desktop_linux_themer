@@ -1,42 +1,75 @@
-# desktop_linux_themer
-Desktop Linux Themer is intended to be used by beginners on Linux to theme their GNOME, XFCE and Cinnamon Desktops
+<h1 style="text-align: center; display: box">Desktop Linux Themer</h1>
 
-# Installation
-The following steps should be followed for downloading:  
-- Make sure that you are using a desktop environment listed here:
-GNOME, XFCE, Cinnamon, Budgie
-If you are on vanilla Ubuntu, Ubuntu-Budgie, Xubuntu, Linux Mint Cinnamon, Linux Mint XFCE, Zorin OS, Zorin OS Lite, vanilla Fedora, Fedora XFCE spin, Fedora Cinnamon spin, vanilla RHEL, Manjaro XFCE, Manjaro GNOME, Manjaro Cinnamon, Manjaro Budgie or any other distro using this desktop environment, you are good to go.  
-- Make sure that you have Python 3 installed on your system. (Most GNU/Linux distros have python3 preinstalled.)   
-To check if it is installed or not, simply open Terminal and type "python3" (without quotes) and press Enter. If you see a message that the command was not found or something wrong happened, it means that if you don't have Python3 installed. If you see something like this:   
+Desktop Linux Themer is a software helping beginners on Linux to theme their GNOME, XFCE, Cinnamon and Budgie Desktops (generally, GTK-based desktops).
+
+## Requirements
+
+- <details>
+      <summary> Supported Desktop Environnements </summary>
+      <ul>
+          <li>GNOME</li>  
+          <li>XFCE</li>  
+          <li>Cinnamon</li>  
+          <li>Budgie</li>
+      </ul>
+  </details>
+
+- <details>
+      <summary> Supported Distros </summary>
+      <ul>
+          <li>Ubuntu (Budgie, Xubuntu/XFCE)</li>
+          <li>Linux Mint (Cinnamon, XFCE)</li>
+          <li>Zorin OS (+ Lite)</li>
+          <li>Fedora (GNOME, XFCE, Cinnamon)</li>
+          <li>RedHat Enterprise Linux (vanilla)</li>
+          <li>Manjaro (GNOME, XFCE, Cinnamon, Budgie)</li>
+      </ul>
+  </details>
+- Python 3 (type `python3` in terminal, use your package manager to install Python 3 if not)
+
+## Installation
+
+The following steps should be followed for downloading:
+
+- Make sure that you are using a [supported desktop environment](#requirements).
+
+- Make sure that you have [Python 3 installed on your system](#check-python-installation). (Most GNU/Linux distros have python3 preinstalled.)
+
+- In a terminal, install the `pysimplegui` library by typing `sudo pip install pysimplegui` (if this errors, [check the official documentation.](https://pip.pypa.io/en/stable/installation/))
+
+- Download the latest archive (either tar.gz or .zip) in the [releases](../../releases/latest).
+- Unzip it using your favorite unarchiver.
+- Open a terminal, and navigate to the unarchived folder.
+- Build the installer script using `chmod +x ./build_installer.sh && sh ./build_installer.sh`.
+- Verify that the installer is executable : `chmod +x ./installer.sh`
+- Lauch the installer : `sudo ./installer.sh`.
+
+Finally, you have installed it!
+
+##### Additional step for GNOME and Budgie users:
+
+Make sure that the `user-theme` extension is installed and enabled through <https://extensions.gnome.org/extension/19/user-themes/>.
+
+## Check Python installation
+
+1. Type `python3` in your terminal. It should output this (more or less) :
+
 ```bash
+Python 3.8.10 (default, Mar 13 2023, 10:26:41)
+[GCC 9.4.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
-this means that you have python3 installed.   
-To install Python3 (if not installed), first make sure that Interent Connection is available and then follow the steps given below:  
-If on Ubuntu or Debian or distros based on these two: open terminal and type "sudo apt install python3 -y" (without quotes) and press enter and put in your account password and wait for the installation to complete.  
-If on Fedora or Red Hat Enterprise Linux or distros based on these: open terminal and type "sudo dnf install python3 -y" (without quotes) and press enter and put in your account password and wait for the installation to complete.  
-If on Arch Linux or Manjaro or distros based on Arch: open terminal and type "sudo pacman -S python3 -y" (without quotes) and press enter and put in your account password and wait for the installation to complete.  
-- Then follow the steps for respective distros:  
-If on Ubuntu or Debian or distros based on these two: open terminal and type "sudo apt install tk tcl python3-tk python3-pip -y" and press enter and put in your account password and wait for the installation to complete.  
-If on Fedora or Red Hat Enterprise Linux or distros based on these: open terminal and type "sudo dnf install tk tcl python3-tkinter python3-pip -y" (without quotes) and press enter and put in your account password and wait for the installation to complete.  
-If on Arch Linux or Manjaro or Garuda or distros based on Arch: open terminal and type "sudo pacman -S tk tcl python3-tk python3-pip -y" (without quotes) and press enter and put in your account password and wait for the installation to complete. 
-- Then in terminal, (for all distros) type "sudo pip install pysimplegui" (without quotes) and type in your account password and wait for the installation to complete.
-- Download the latest archive (either tar.gz or .zip) through this page: https://github.com/hemish04082005/desktop_linux_themer/releases/latest/ and unzip it and open terminal and navigate to unarchived folder using "cd" command and then type "./build_installer.sh" (without quotes) and press enter and then type "sudo ./installer.sh" (without quotes). Then, put in your account password and wait for the installation to succeeed. Finally, you have installed it! If you encounter "Permission denied" or "Command not found", use this command to first turn the build_installer.sh and installer.sh executable by commands:  
-```bash  
-chmod +x build_installer.sh
-```  
-```bash  
-chmod +x installer.sh
-```
 
-- Additional step for GNOME and Budgie users: Make sure that user-theme extension is installed through https://extensions.gnome.org/extension/19/user-themes/ and enabled too.  
+2. If any errors occur, [check the official documentation](https://wiki.python.org/moin/BeginnersGuide/Download) to correctly install the latest Python 3 on your system.
 
-# Usage:  
+## Usage
+
 Use applications menu/whisker menu/start menu/gnome app drawer or anything like start menu on your desktop and search for "Desktop Linux Themer" and launch the application.
-Then use it to switch GTK, Window Manager, Desktop, Icons, Cursors theme through drop down menus and buttons provided. 
+Then use it to switch GTK, Window Manager, Desktop, Icons, Cursors theme through drop down menus and buttons provided.
 
-# To do:  
-- add lxde desktop support
-- provide mechanism for downloading and installing popular themes within the application
-- make installation simple
+## To do
+
+- Add lxde desktop support
+- Provide mechanism for downloading and installing popular themes within the application
+- Make installation simpler
